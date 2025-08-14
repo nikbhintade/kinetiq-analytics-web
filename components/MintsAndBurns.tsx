@@ -71,13 +71,16 @@ export default function MintsBurnsChart() {
         </div>
       ) : (
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data}>
-            <XAxis dataKey="date" stroke="#ddd" tick={{ fontSize: 10 }} />
+          <BarChart data={data} barGap={2} barCategoryGap={2}>
+            <XAxis dataKey="date" stroke="#ddd" tick={false} axisLine={false} />
             <YAxis
               stroke="#ddd"
               tick={{ fontSize: 10 }}
               domain={["auto", "auto"]}
               scale="symlog"
+              tickFormatter={(value) => value.toLocaleString()}
+              allowDecimals={true}
+              ticks={[-30000, 0, 6000000]}
             />
             <Tooltip
               contentStyle={{ backgroundColor: "#1f1f1f", border: "none" }}
