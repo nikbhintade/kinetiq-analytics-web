@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "https://indexer.dev.hyperindex.xyz/837b74b/v1/graphql", // replace with your GraphQL API
+  uri: "https://indexer.dev.hyperindex.xyz/837b74b/v1/graphql",
   cache: new InMemoryCache(),
 });
 

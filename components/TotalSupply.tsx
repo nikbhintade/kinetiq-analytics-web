@@ -6,6 +6,16 @@ export default function TotalSupply() {
   const [totalSupply, setTotalSupply] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  function formatNumber(num: number) {
+    if (num >= 1_000_000) {
+      return (num / 1_000_000).toFixed(2) + "M";
+    } else if (num >= 1_000) {
+      return (num / 1_000).toFixed(2) + "K";
+    } else {
+      return num.toLocaleString();
+    }
+  }
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -14,9 +24,8 @@ export default function TotalSupply() {
         const rawSupply = json?.TotalSupplySnapshot?.[0]?.totalSupply;
 
         if (rawSupply) {
-          // Convert from 18 decimal
           const normalSupply = Number(rawSupply) / 1e18;
-          setTotalSupply(normalSupply.toLocaleString());
+          setTotalSupply(formatNumber(normalSupply));
         } else {
           setTotalSupply(null);
         }
@@ -29,8 +38,30 @@ export default function TotalSupply() {
     fetchData();
   }, []);
 
-  if (loading) return <p className="text-gray-500">Loading...</p>;
-  if (!totalSupply) return <p className="text-red-500">No data</p>;
+  return (
+    <div className="bg-white/3 border border-white/10 rounded-xl p-5 h-40 flex flex-col justify-between">
+      <div>
+        <div className="text-purple-200 font-semibold text-lg leading-tight">
+          Total Supply
+        </div>
+        <div className="text-white/60 text-sm mt-1">
+          Current circulating supply
+        </div>
+      </div>
 
-  return <p className="text-purple-200 text-2xl font-bold">{totalSupply}</p>;
+      <div className="flex-1 flex items-center justify-center">
+        {loading ? (
+          <div className="text-purple-300 font-extrabold text-2xl md:text-4xl leading-tight text-center animate-pulse">
+            Loading...
+          </div>
+        ) : !totalSupply ? (
+          <div className="text-red-500 text-lg text-center">No data</div>
+        ) : (
+          <div className="text-purple-300 font-extrabold text-4xl md:text-6xl leading-tight text-center">
+            {totalSupply}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
