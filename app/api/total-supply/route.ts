@@ -1,29 +1,32 @@
+// app/api/graphql/route.ts
 import { NextResponse } from "next/server";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "https://indexer.dev.hyperindex.xyz/837b74b/v1/graphql",
+  uri: process.env.GRAPHQL_ENDPOINT as string,
   cache: new InMemoryCache(),
 });
 
-const TOTAL_SUPPLY_QUERY = gql`
-  query TotalSupply {
-    TotalSupplySnapshot(limit: 1, order_by: { blockNumber: desc }) {
-      id
-      totalSupply
-      blockNumber
-    }
-  }
-`;
-
-export async function GET() {
+export async function POST(req: Request) {
   try {
-    const { data } = await client.query({ query: TOTAL_SUPPLY_QUERY });
+    const { query, variables } = await req.json();
+
+    if (!query) {
+      return NextResponse.json({ error: "Query is required" }, { status: 400 });
+    }
+
+    const { data } = await client.query({
+      query: gql`
+        ${query}
+      `, // Dynamically compile the query string
+      variables: variables || {},
+    });
+
     return NextResponse.json(data);
   } catch (error) {
-    console.error(error);
+    console.error("GraphQL API Error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch total supply" },
+      { error: "Failed to fetch GraphQL data" },
       { status: 500 }
     );
   }
