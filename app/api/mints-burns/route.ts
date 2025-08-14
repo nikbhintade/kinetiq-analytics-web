@@ -1,4 +1,3 @@
-// app/api/graphql/route.ts
 import { NextResponse } from "next/server";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
