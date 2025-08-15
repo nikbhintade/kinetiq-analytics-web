@@ -61,8 +61,8 @@ export default function MintsBurnsChart() {
   }, []);
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-xl h-56 p-3 flex flex-col">
-      <h2 className="text-sm font-semibold text-purple-200 mb-2">
+    <div className="bg-white/5 border border-white/10 rounded-xl h-96 py-3 px-5 flex flex-col">
+      <h2 className="text-purple-200 font-semibold text-lg leading-tight mb-3">
         Mints vs Burns
       </h2>
       {loading ? (
@@ -76,20 +76,21 @@ export default function MintsBurnsChart() {
             <YAxis
               stroke="#ddd"
               tick={{ fontSize: 10 }}
-              domain={["auto", "auto"]}
+              domain={[-100000, 6000000]}
               scale="symlog"
               tickFormatter={(value) => value.toLocaleString()}
               allowDecimals={true}
-              ticks={[-30000, 0, 6000000]}
+              ticks={[-100000, 0, 6000000]}
             />
             <Tooltip
               contentStyle={{ backgroundColor: "#1f1f1f", border: "none" }}
               labelStyle={{ color: "#fff" }}
-              formatter={(value: number) =>
+              formatter={(value: number, name: string) => [
                 Math.abs(value).toLocaleString(undefined, {
-                  maximumFractionDigits: 4,
-                })
-              }
+                  maximumFractionDigits: 2,
+                }),
+                name.charAt(0).toUpperCase() + name.slice(1), // Capitalize first letter
+              ]}
             />
             <Legend />
             <ReferenceLine y={0} stroke="#ccc" />

@@ -1,5 +1,6 @@
 import MintsBurnsChart from "@/components/MintsAndBurns";
 import TotalSupply from "@/components/TotalSupply";
+import TotalSupplyChart from "@/components/TotalSupplyChart";
 
 export default function Home() {
   return (
@@ -26,8 +27,11 @@ export default function Home() {
         </div> */}
 
         {/* Example large chart */}
-        <div className="bg-white/5 border border-white/10 rounded-xl h-56">
+        <div className="bg-white/5 border border-white/10 rounded-xl">
           <MintsBurnsChart />
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl">
+          <TotalSupplyChart />
         </div>
       </div>
     </div>
